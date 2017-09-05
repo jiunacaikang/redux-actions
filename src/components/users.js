@@ -4,14 +4,14 @@ import { connect } from "react-redux"
 import { fetchUsers, addUser, deleteUser } from "../actions/usersActions"
 
 class User extends Component {
-	componentDidMount() {
-		this.fetchUsers();
-	}
-
 	constructor(props){
 		super(props)
 		this.state = {delId:""}
 		this.delChange = this.delChange.bind(this);
+	}
+
+	componentDidMount() {
+		this.fetchUsers();
 	}
 
 	fetchUsers() {
@@ -54,7 +54,7 @@ class User extends Component {
 	}
 
 	render() {
-    	var showHtml,loading;
+    	var loading;
     	const { users } = this.props;
 
     	if(this.props.userFetching){
@@ -67,31 +67,20 @@ class User extends Component {
     	  loading = <p style={{textAlign:"center",color:"#ccc"}}>delete user...</p>
     	}
 
-    	if (!users.length) {
-    	  showHtml = 
-    	    <div>
-    	      <button onClick={this.fetchUsers.bind(this)}>load users</button>
-    	      {loading}
-    	    </div>
-    	}else{
-    	  const mappedUsers = users.map(user => <li 
-    	    	key={user.id}>
-    	      	id:{user.id}<p>name:{user.name}</p>
-    	    </li>
-    	  )
+    	const mappedUsers = users.map(user => <li 
+    	  	key={user.id}>
+    	    	id:{user.id}<p>name:{user.name}</p>
+    	  </li>)
 	
-    	  showHtml = 
-    	  <div style={{width:"960px",margin:"0 auto"}}>
-    	    <button onClick={this.addUser.bind(this)}>add user</button>
-    	    <button onClick={this.fetchUsers.bind(this)}>refresh</button>
-    	    <button onClick={this.deleteUsers.bind(this)}>delete user</button>
-    	    <input type="text" value={this.state.delId}  onChange={this.delChange} placeholder="输入要删除的id" />
-    	    {loading}
-    	    <ul>{mappedUsers}</ul>
-    	  </div>                    
-	    }
-	
-	    return showHtml
+    	return (
+    	<div style={{width:"960px",margin:"0 auto"}}>
+    	  <button onClick={this.addUser.bind(this)}>add user</button>
+    	  <button onClick={this.fetchUsers.bind(this)}>refresh</button>
+    	  <button onClick={this.deleteUsers.bind(this)}>delete user</button>
+    	  <input type="text" value={this.state.delId}  onChange={this.delChange} placeholder="输入要删除的id" />
+    	  {loading}
+    	  <ul>{mappedUsers}</ul>
+    	</div>)
 	}
 }	
 
